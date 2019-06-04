@@ -49,7 +49,8 @@ correct_answer = 0
 wrong_answer = 0
 index = 0
 
-def tally_score():
+def wrong_sort(state):
+    return state['incorrect']
 
 while index <= len(states):
     if index == len(states):
@@ -59,17 +60,23 @@ while index <= len(states):
             wrong_answer = 0
             index = 0
             random.shuffle(states)
+            states.sort(reverse=True, key=wrong_sort)
+            print(states)
         else:
             break
+    hint = states[index]["capital"]
     print(f'Correct Answer: {correct_answer} | Wrong Answer {wrong_answer}')
     print(f'Guess the capital of this state {states[index]["name"]}')
+    print(f'HINT!!! The first three letters are {hint[:3]}')
     user_guess = input('Input the correct capital for the state listed: ')
     if user_guess == states[index]["capital"]:
         print("You got that right!")
         correct_answer += 1
+        states[index]["correct"] += 1
     else:
         print("You're an idiot!")
         wrong_answer += 1
+        states[index]["incorrect"] += 1
     index += 1
 print(f'Correct Answer: {correct_answer} | Wrong Answer {wrong_answer}')
 
